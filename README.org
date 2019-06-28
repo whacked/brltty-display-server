@@ -1,0 +1,19 @@
+* brltty-display-server
+
+  a barebones JSON-RPC 2.0 server that provides a single =show= method
+  that displays the input text onto a [[http://mielke.cc/brltty/doc/Manual-BrlAPI/English/BrlAPI-1.html][BrlAPI]]-compatible display.
+  
+  documentation on the python usage seems to be limited to [[https://github.com/brltty/brltty/blob/master/Bindings/Python/apitest.py][apitest.py]]
+  from the official repository. That file also seems to demonstrate
+  windows usage; this repository assumes linux.
+
+  tested on =Ubuntu 18.04.2 LTS (bionic)= using =nix-env (Nix) 2.2.1=
+  
+* usage
+
+  =nix-shell= into the environment and run:
+  - =start-brltty= starts the brltty daemon
+  - =start-receiver= starts the jsonprc server defined in
+    [[file:receiver.py]]
+
+  see [[file:example_transmitter.py]] for a minimal transmission request
