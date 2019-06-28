@@ -7,9 +7,10 @@ import logging
 import brlapi
 import errno
 import atexit
-from werkzeug.wrappers import Request, Response
-from werkzeug.serving import run_simple
-from jsonrpc import JSONRPCResponseManager, dispatcher
+
+from flask import Flask, request, Response
+from jsonrpcserver import method, dispatch
+from flask_cors import CORS
 
 
 logging.basicConfig()
@@ -24,7 +25,10 @@ _Display = None
 DISPLAY_SIZE = 40
 
 
-@dispatcher.add_method
+app = Flask(__name__)
+CORS(app, supports_credentials=True)
+
+@method
 def show(text):
     if text.strip() == '':
         if _Display:
@@ -38,11 +42,13 @@ def show(text):
     return len(text)
 
 
-@Request.application
-def application(request):
-    response = JSONRPCResponseManager.handle(
-        request.data, dispatcher)
-    return Response(response.json, mimetype='application/json')
+@app.route('/jsonrpc', methods=['POST'])
+def jsonrpc():
+    req = request.get_data().decode()
+    response = dispatch(req)
+    return Response(str(response),
+                    response.http_status,
+                    mimetype='application/json')
 
 
 def initialize_display():
@@ -104,4 +110,4 @@ if __name__ == '__main__':
         def cleanup():
             logger.debug('cleaning up...')
             terminate_display(_Display)
-        run_simple(HOSTNAME, PORT, application)
+        app.run(host=HOSTNAME, port=PORT)
