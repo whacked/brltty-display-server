@@ -11,14 +11,16 @@ import atexit
 from flask import Flask, request, Response
 from jsonrpcserver import method, dispatch
 from flask_cors import CORS
+from dynaconf import settings
 
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-HOSTNAME = 'localhost'
-PORT = 8111
+conf = settings.from_env('braille-python-server').to_dict()
+HOSTNAME = conf['HOSTNAME']
+PORT = conf['PORT']
 
 _Display = None
 # PACmate 40
@@ -98,9 +100,13 @@ def terminate_display(brl):
 if __name__ == '__main__':
     if 'test' in sys.argv:
         _Display = initialize_display()
-        _Display.writeText('pack my box with five dozen liquor jugs')
+        if sys.argv[-1] != 'test':
+            text = sys.argv[-1]
+        else:
+            text = 'pack my box with five dozen liquor jugs'
+        _Display.writeText(text)
         time.sleep(3)
-        terminate_display()
+        terminate_display(_Display)
 
     if 'server' in sys.argv:
         logger.debug('initializing display...')
