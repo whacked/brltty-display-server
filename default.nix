@@ -9,7 +9,8 @@ stdenv.mkDerivation rec {
     name = "braille-python-server";
     buildInputs = [
         brltty
-        python37Packages.ipython
+        python38
+        python38Packages.ipython
     ];
 
     shellHook = ''
