@@ -1,5 +1,6 @@
 requests>=2.22.0
 Flask>=1.0.3
-jsonrpcserver>=4.0.4
+# NOTE: version 5 breaks
+jsonrpcserver==4.2.0
 Flask-Cors>=3.0.8
 dynaconf[ini]==2.2.3
