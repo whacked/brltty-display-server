@@ -111,7 +111,7 @@ if __name__ == '__main__':
     if 'server' in sys.argv:
         logger.debug('initializing display...')
         _Display = initialize_display()
-        logger.debug('starting server...')
+        logger.debug(f'starting server on {HOSTNAME}:{PORT}...')
         @atexit.register
         def cleanup():
             logger.debug('cleaning up...')

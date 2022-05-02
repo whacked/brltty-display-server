@@ -9,7 +9,17 @@
 
   tested on =Ubuntu 18.04.2 LTS (bionic)= using =nix-env (Nix) 2.2.1=
   
+
 * usage
+
+  example =settings.ini= file:
+
+  #+begin_example
+    [braille-python-server]
+    HOSTNAME = localhost
+    PORT = 8111
+  #+end_example
+
 
   =nix-shell= into the environment and run:
   - =start-brltty= starts the brltty daemon
